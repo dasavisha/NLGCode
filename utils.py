@@ -56,8 +56,8 @@ def data_prep_words(self, path, typeFile=False, typeDir=False):
                 counter += 1
                 if counter % 10000 == 0:
                     print ("Done, {}".format(counter))
-                wl = create_wordlist(input_text) #get word list of entire chapter 
-                tokenized_words.extend(wl) # insert the word list 
+                wl = create_wordlist(input_text) #get word list of entire chapter
+                tokenized_words.extend(wl) # insert the word list
 
     if typeDir:
         list_files = os.listdir(path)
@@ -66,9 +66,9 @@ def data_prep_words(self, path, typeFile=False, typeDir=False):
             with codecs.open(data_input_file, "r") as i_f:
                 data_input = i_f.read()
             input_text = nlp(data_input)
-            wl = create_wordlist(input_text) #get word list of entire chapter 
-            tokenized_words.extend(wl) # insert the word list 
-    #write to a tokenized_words file 
+            wl = create_wordlist(input_text) #get word list of entire chapter
+            tokenized_words.extend(wl) # insert the word list
+    #write to a tokenized_words file
     with open(word_tokens_file, 'wb') as f_wt: #save word tokens
         pickle.dump(tokenized_words, f_wt)
     return (tokenized_words)
@@ -82,7 +82,7 @@ def word_indexing():
     words_ = [x[0] for x in word_counts.most_common()] #get the words arranged in descending order of counts
     vocab_inv = list(sorted(words_)) #get the words in a list
 
-    ##mapping from word to index -- 
+    ##mapping from word to index --
     vocabulary_ = {x: i for i,x in enumerate(vocab_inv)} #get the word to index using list indexing
 
     # size of the vocabulary
@@ -91,3 +91,4 @@ def word_indexing():
     #write to a vocabulary file
     with open(vocabulary_file, 'wb') as f: #save vocabulary and words
         pickle.dump((words_, vocabulary_, vocab_inv), f)
+

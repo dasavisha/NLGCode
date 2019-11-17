@@ -3,45 +3,45 @@ Repository to add all the Language Generation Models developed as part of thesis
 This is the README File
 ---------------------------
 
-1. Download the "writing prompts" dataset and untar the file
-    --- mkdir stories
-    --- cd stories
-    --- wget https://dl.fbaipublicfiles.com/fairseq/data/writingPrompts.tar.gz | tar xvzf -
+1. Download the "writing prompts" dataset and untar the file 
+
+    * mkdir stories
+    * cd stories
+    * wget https://dl.fbaipublicfiles.com/fairseq/data/writingPrompts.tar.gz | tar xvzf -
 
 2. First round of preprocessing the data 
-    --- Instead of using the full released dataset we limit to the first 1000 words
-    --- An example code that trims the dataset to the first 1000 words of each story
-    --- python main.py --filepath ../stories_data/writingPrompts/ --truncate 
+    * Instead of using the full released dataset we limit to the first 1000 words
+    * An example code that trims the dataset to the first 1000 words of each story
+    * python main.py --filepath ../stories_data/writingPrompts/ --truncate 
 
 3. Get the stats for the data
-    --- Prints the number of articles and vocabulary count in each text
-    --- python main.py --filepath ../stories_data/writingPrompts/ --stats
+    * Prints the number of articles and vocabulary count in each text
+    * python main.py --filepath ../stories_data/writingPrompts/ --stats
             {'train': 272600, 'test': 15138, 'valid': 15620} {'train': 272600, 'test': 15138, 'valid': 15620}
-    --- python main.py --filepath ../stories_data/writingPrompts/ --count_vocab 
-            The vocabulary for the stories in train is: 454219
-            The vocabulary for the prompts in train is: 39892
-            The vocabulary for the stories in test is: 83862
-            The vocabulary for the prompts in test is: 11162
-            The vocabulary for the stories in valid is: 85576
-            The vocabulary for the prompts in valid is: 11129
+    * python main.py --filepath ../stories_data/writingPrompts/ --count_vocab 
+            1. The vocabulary for the stories in train is: 454219
+            2. The vocabulary for the prompts in train is: 39892
+            3. The vocabulary for the stories in test is: 83862
+            4. The vocabulary for the prompts in test is: 11162
+            5. The vocabulary for the stories in valid is: 85576
+            6. The vocabulary for the prompts in valid is: 11129
 
 4. Get the statistics as shown in Fan et. al. Table 1
-    --- cd stories_data/writingPrompts
-    --- wc -w [train/test/valid].wp_target 
-            (160985243/8966916/9146281)
-    --- wc -w [train/test/valid].wp_source 
-            (7735772/425521/453716)
+    * cd stories_data/writingPrompts
+    * wc -w [train/test/valid].wp_target [(160985243/8966916/9146281)]
+    * wc -w [train/test/valid].wp_source [(7735772/425521/453716)]
 
 5. Running the pre-trained models
-    --- python main.py --filepath ../stories_data/writingPrompts/ --generate --num_samples <N> --temperature <T> --top_k <k> --length <L>
+    * python main.py --filepath ../stories_data/writingPrompts/ --generate --num_samples <N> --temperature <T> --top_k <k> --length <L>
+    ```
         N = # of samples to generate using prompts from test set
         T = The softmax temperature ranges between 0 to 1 in float. Default value is 1.0.
         k = The integer value for top K sampling. Default is 0.
         L = The number of words to be generated in the sample. Default is 150. 
-        
-    --- OpenAI's GPT models and Google/CMU's Transformer-XL and XLNet are available at: https://huggingface.co/transformers/pretrained_models.html
+     ```   
+    * OpenAI's GPT models and Google/CMU's Transformer-XL and XLNet are available at: https://huggingface.co/transformers/pretrained_models.html
         python run_generation.py --model_type=<> --length=150 --model_name_or_path=<> 
-        
+        ```
         --- GPT models
                 a. openai-gpt, 110M parameters.
                     model_type = openai-gpt 
@@ -65,12 +65,15 @@ This is the README File
                 c. xlnet-large-cased, 340M parameters.
                     model_type = xlnet
                     model_name_or_path = xlnet-large-cased
-    --- Conventional Seq2Seq models
+        ```
+    * Conventional Seq2Seq models
+        ```
         --- Fusion model
             --- Binarize the dataset
                 <<add the command>>
             --- Run the generation
                 fairseq-generate data-bin/writingPrompts --path /home/avisha/Desktop/Fall_2019/NLGCode/prepCNNDM/models/fusion_checkpoint.pt --batch-size 32 --beam 1 --sampling --sampling-topk 10 --temperature 0.8 --nbest 1 --model-overrides "{'pretrained_checkpoint':'/home/avisha/Desktop/Fall_2019/NLGCode/prepCNNDM/models/pretrained_checkpoint.pt'}"
+    ```
 
 6. Outputs saved in the 'save' directory
     --- Sample_R2: python main.py --filepath ../stories_data/writingPrompts/ --generate --num_samples 10 <<completed>>
